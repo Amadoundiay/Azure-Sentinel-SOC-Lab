@@ -24,22 +24,36 @@ This project demonstrates how to build a complete SOC lab environment using Micr
 See [`setup/student-alternative-subscription.md`](setup/student-alternative-subscription.md) for alternatives (e.g. free trial + credit card).
 
 ### 2. Resource Group and VNet
-To create a Resource Group:
+markdown
+Copy
+Edit
+### 2. Resource Group and VNet
 
-1. Go to the Azure Portal.
-2. In the search bar, type `Resource groups`.  
-   ![Search Resource Groups](screenshots/resource-group-search.png)
-3. Click **Create**.  
-   ![Click Create](screenshots/resource-group-create.png)
-4. Enter your **Resource Group name**, for example: `RG-SOC-LAB`.  
-   ![Enter Name](screenshots/resource-group-name.png)
+#### ✅ Creating a Resource Group
+
+1. Go to the [Azure Portal](https://portal.azure.com).
+2. In the search bar at the top, type `Resource groups`.  
+   ![Search Resource Groups](resource-group-search.png)
+3. Click the **Create** button.  
+   ![Click Create](resource-group-create.png)
+4. In the creation form:
+   - Select your **Azure subscription**
+   - Choose a **region**
+   - Enter the **Resource Group name** (e.g., `RG-SOC-LAB`)  
+   ![Enter Name](resource-group-name.png)
+5. Click **Review + Create**, then finally click **Create**.
 
 ---
 
-After that, create a Virtual Network:
+#### 🌐 Creating a Virtual Network
 
-- Virtual Network Name: `Vnet-soc-lab`
-- Associate it with the created Resource Group `RG-SOC-LAB`
+1. In the Azure Portal, search for `Virtual networks`.  
+   ![Search Virtual Network](virtual-network-1.png)
+2. Click **Create** and select the **existing resource group** `RG-SOC-LAB`.  
+   ![Select Resource Group](virtual-network-2.png)
+3. Enter a name for the VNet, e.g. `Vnet-soc-lab`, and complete the required fields.  
+   ![Enter VNet Name](virtual-network-3.png)
+4. Click **Review + Create**, then **Create** to finish deploying the virtual network.
 
 ### 3. Virtual Machine Setup
 - Created a Windows VM
