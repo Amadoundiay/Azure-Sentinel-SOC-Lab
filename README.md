@@ -55,11 +55,65 @@ Edit
    ![Enter VNet Name](virtual-network-3.png)
 4. Click **Review + Create**, then **Create** to finish deploying the virtual network.
 
-### 3. Virtual Machine Setup
-- Created a Windows VM
-- Attached VM to VNet and NSG
-- Allowed RDP, SSH, MySQL traffic (lab purpose)
-- Connected to VM from host using RDP
+### 3. Virtual Machine (VM) Creation
+
+#### 🖥️ Creating the Virtual Machine
+
+1. In the Azure Portal, search for `Virtual machines`.  
+   ![Search Virtual Machine](VM-1.png)
+2. Click **Create**, and choose the **existing resource group** `RG-SOC-LAB`.  
+   ![Create VM](VM-2.png)
+3. In the Basics tab, fill in the following details:  
+   - **VM Name:** `CORP-NET-EAST-1`  
+   - **Image:** *Windows 10 Pro N, version 22H2 - x64 Gen2*  
+   - **Username:** `labuser`  
+   - **Password:** your choice  
+   - ✅ Check **“I confirm I have an eligible Windows 10/11 license...”**
+4. Click through to the other tabs:
+   - **Disks:** keep default
+   - **Networking:** select `Vnet-soc-lab`  
+     ✅ Check **Delete public IP and NIC when VM is deleted**
+   - All other settings: leave as default  
+   ![VM Creation Confirmation](VM-3.png)
+5. Click **Review + Create**, then **Create**.
+
+---
+
+### 4. Configure Firewall (NSG)
+
+Once the deployment is complete:
+
+1. Go to `Resource groups` → Select `RG-SOC-LAB`
+2. Click on **`CORP-NET-EAST-1-nsg`**  
+   ![NSG Selection](firewall-setting-2.png)
+3. Delete the default **RDP rule** by clicking the trash icon.  
+   ![Delete Default RDP Rule](firewall-setting-3.png)
+4. Click on **Inbound security rules** → **Add rule**
+5. In the new rule:
+   - **Source:** Any
+   - **Destination:** Any
+   - **Port:** Any
+   - **Protocol:** Any
+   - **Action:** Allow
+   - **Priority:** 100
+   - **Name:** AllowAll
+   - Description: Honeypot Lab  
+   ![Add Firewall Rule](firewall-setting-4.png)
+6. Click **Add** to save the rule.
+
+---
+
+### 5. Connect to the VM
+
+1. In Azure Portal, search for `Virtual machines`
+2. Select your VM `CORP-NET-EAST-1`  
+   ![Select VM](Test-1.png)
+3. Copy the **public IP address** to use in RDP connection from your host machine.  
+   ![Copy Public IP](Test-2.png)
+4. Use **Remote Desktop (RDP)** to connect using:
+   - **Username:** `labuser`
+   - **Password:** the one you set during VM creation
+
 
 ### 4. Log Collection
 - Triggered a failed login (EventID 4625)
