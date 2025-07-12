@@ -57,6 +57,8 @@ Edit
 
 ### 3. Virtual Machine (VM) Creation
 
+### 3. Virtual Machine (VM) Creation
+
 #### 🖥️ Creating the Virtual Machine
 
 1. In the Azure Portal, search for `Virtual machines`.  
@@ -103,16 +105,44 @@ Once the deployment is complete:
 
 ---
 
-### 5. Connect to the VM
+### 5. Connect to the VM from Host Machine
 
-1. In Azure Portal, search for `Virtual machines`
-2. Select your VM `CORP-NET-EAST-1`  
+#### 💻 Remote Desktop Access
+
+1. In the Azure Portal, search for `Virtual machines`
+2. Select the VM `CORP-NET-EAST-1`  
    ![Select VM](Test-1.png)
-3. Copy the **public IP address** to use in RDP connection from your host machine.  
+3. Copy the **Public IP address**  
    ![Copy Public IP](Test-2.png)
-4. Use **Remote Desktop (RDP)** to connect using:
+4. On your **host machine**, open the **Remote Desktop Connection** tool.
+5. Paste the VM's Public IP address.  
+   ![Enter IP in RDP](HostConnection-1.png)
+6. Enter the credentials:
    - **Username:** `labuser`
-   - **Password:** the one you set during VM creation
+   - **Password:** the one you set
+7. Click **Connect**, then **Yes** to accept the certificate prompt.  
+   ![RDP Connection Confirmation](HostConnection-2.png)
+
+---
+
+### 6. Disable Windows Firewall in the VM
+
+Once inside the VM via RDP:
+
+1. Open the **Start menu** and search for **"Firewall & network protection"**  
+   ![Firewall Settings](HostConnection-3.png)
+2. Turn off all three profiles:
+   - **Domain network**
+   - **Private network**
+   - **Public network**  
+   ![Disable All Profiles](HostConnection-4.png)
+
+---
+
+✅ Now, from your **host machine**, you should be able to ping the VM successfully, as the firewall is disabled and NSG allows all traffic.
+
+---
+
 
 
 ### 4. Log Collection
