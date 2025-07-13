@@ -145,9 +145,32 @@ Once inside the VM via RDP:
 
 
 
-### 4. Log Collection
-- Triggered a failed login (EventID 4625)
-- Verified via Event Viewer → Security logs
+### 7. Log Collection – Simulate Failed Login (Brute Force)
+
+To simulate a brute-force login attempt and verify log generation in Windows Event Viewer:
+
+#### 🔐 Simulate a Failed RDP Login
+
+1. Open a **new RDP session** from your host machine.
+2. Enter an invalid username (e.g., `bruteforce`) and any password.
+   ![Invalid Username Attempt](BruteForceActivity-1.png)
+3. Click **OK** — the authentication will fail.
+   ![Failed Login](BruteForceActivity-2.png)
+
+---
+
+#### 🧾 Check Logs in Event Viewer (Inside the VM)
+
+1. Inside the VM, open the **Start menu** and search for `Event Viewer`.
+2. Navigate to:  
+   `Windows Logs` → `Security`
+3. Look for an event with **Event ID 4625** (failed login).
+   ![Event Viewer Open](BruteForceActivity-3.png)
+4. Click on the event to view the **username** that attempted the login (e.g., `bruteforce`).  
+   ![Failed Login Details](BruteForceActivity-4.png)
+
+✅ This confirms that failed login attempts are being recorded by the Windows Event Log, and will be collected once connected to Microsoft Sentinel.
+
 
 ### 5. Log Analytics Workspace & Sentinel
 - Created: `LAW-soc-lab-0000`
