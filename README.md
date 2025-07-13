@@ -172,14 +172,66 @@ To simulate a brute-force login attempt and verify log generation in Windows Eve
 ✅ This confirms that failed login attempts are being recorded by the Windows Event Log, and will be collected once connected to Microsoft Sentinel.
 
 
-### 5. Log Analytics Workspace & Sentinel
-- Created: `LAW-soc-lab-0000`
-- Connected Sentinel to LAW
-- Installed "Security Events" content
+### 8. Log Analytics Workspace & Microsoft Sentinel Setup
 
-### 6. Forwarding VM Logs to Sentinel
-- Created a Data Collection Rule (DCR)
-- Enabled forwarding Windows security logs
+#### 📊 Create a Log Analytics Workspace
+
+1. In the Azure Portal, search for `Log Analytics workspaces`.
+2. Click **Create** to launch the workspace wizard.  
+   ![Create LAW](Log-Analytics-1.png)
+3. Fill in the required fields:
+   - **Name:** `LAW-soc-lab-0001`
+   - **Resource Group:** `RG-SOC-LAB`  
+   ![Enter LAW Details](Log-Analytics-2.png)
+4. Click **Review + Create**, then **Create** to deploy the workspace.
+
+---
+
+### 9. Connect Sentinel & Install Security Event Connector
+
+#### 🧠 Add Microsoft Sentinel to LAW
+
+1. In the Azure Portal, search for `Microsoft Sentinel`.
+2. You should see your workspace (`LAW-soc-lab-0001`) listed. Click **Add** to connect Sentinel to the workspace.  
+   ![Connect Sentinel](Log-Analytics-3.png)
+
+---
+
+#### 📦 Install Windows Security Events Content Pack
+
+1. In the Sentinel workspace (`LAW-soc-lab-0001`), go to **Content Management** → **Content Hub**.
+2. Search for `Security Events` and install the **Windows Security Events** pack.  
+   ![Install Security Events](Log-Analytics-4.png)
+3. Once installation finishes, click **Manage**.  
+   ![Click Manage](Log-Analytics-5.png)
+
+---
+
+#### ⚙️ Configure Data Collection (via AMA)
+
+1. In the content connector page, choose **Windows Security Events via AMA**.
+2. Click **Open connector page**.  
+   ![Open Connector Page](Log-Analytics-6.png)
+3. Click **+ Create data collection rule** and fill in:
+   - **Name:** `DCR-windows`
+   - **Resources:** select your VM (`CORP-NET-EAST-1`)
+   - **Collect:** choose **All Security Events**
+4. Click **Review + Create**, then **Create**.  
+   ![Create DCR](Log-Analytics-7.png)
+
+---
+
+### 10. Querying Failed Login Logs in Sentinel
+
+1. Open **Log Analytics workspace** → select `LAW-soc-lab-0001`
+2. Click **Logs**
+3. Use the KQL query below to see failed login attempts:
+
+```kql
+SecurityEvent
+| where EventID == 4625
+| order by TimeGenerated desc
+
 
 ### 7. GeoIP Watchlist
 - Uploaded IP database to Watchlist (name: `geoip`)
