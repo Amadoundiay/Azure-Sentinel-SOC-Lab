@@ -232,22 +232,59 @@ SecurityEvent
 | where EventID == 4625
 | order by TimeGenerated desc
 
+### 11. 🌍 Visualize Attacker IPs Using a GeoIP Watchlist
 
-### 7. GeoIP Watchlist
-- Uploaded IP database to Watchlist (name: `geoip`)
+This step enriches failed login logs with geographic information (country, city, latitude, longitude) using a custom Watchlist and KQL query in Microsoft Sentinel.
 
-### 8. Query & Map Visualization
+---
 
-**KQL Query:** [`queries/geoip-attack-map.kql`](images/queries/geoip-attack-map.kql)
+### 11. 🌍 Visualize Attacker IPs Using a GeoIP Watchlist
 
-**Attack Map:** See [`screenshots/attack-map.png`](images/screenshots/attack-map.png)
+This step enriches failed login logs with geographic information (country, city, latitude, longitude) using a custom Watchlist and KQL query in Microsoft Sentinel.
+
+---
+
+#### 🧭 Step-by-Step: Create the GeoIP Watchlist in Microsoft Sentinel
+
+1. In the Azure Portal, search for `Microsoft Sentinel`.
+2. Select the workspace: `LAW-soc-lab-0001`.  
+   ![Select Workspace](images/WatchList-1.png)
+
+3. Under the **Configuration** section, click on **Watchlist**.  
+   ![Open Watchlist](images/WatchList-2.png)
+
+4. Click **+ Add new** to create a new Watchlist.
+
+5. In the Watchlist wizard:  
+   - **Name:** `geoip`  
+   - **Alias:** `geoip`  
+   ![General Settings](images/WatchList-3.png)
+
+6. In the **Source** section:  
+   - Upload your `GeoLite2-IP.csv` file  
+   - Set the **SearchKey** to: `network`
+
+7. Click **Review + Create**, then **Create**.  
+   ![Review and Create](images/WatchList-4.png)
+
+📌 *Wait a few minutes for the watchlist to fully load and process.*
+
+---
+
+#### 🔍 Step: Run the KQL Query to Enrich Event 4625 with GeoIP Data
+
+1. Open `Microsoft Sentinel` → Select `LAW-soc-lab-0001`
+2. Click on **Logs** under General
+3. Paste and run the following query (replace the IP with one from your own logs):
 
 ```kusto
 let GeoIPDB_FULL = _GetWatchlist("geoip");
 let WindowsEvents = SecurityEvent
-    | where IpAddress == "92.63.197.9"
-    | where EventID == 4625
-    | order by TimeGenerated desc
-    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+| where EventID == 4625
+| where IpAddress == "92.63.197.9"  // Replace with an IP from your logs
+| order by TimeGenerated desc
+| evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
 WindowsEvents
 | project TimeGenerated, Computer, Attacker_IP = IpAddress, cityname, countryname, latitude, longitude
+
+
