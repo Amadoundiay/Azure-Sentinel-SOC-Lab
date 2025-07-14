@@ -21,7 +21,7 @@ This project demonstrates how to build a complete SOC lab environment using Micr
 - Got access to $100 in free credits and Azure for Students
 
 ### 🧑‍🎓 Don't have a student email?
-See [`setup/student-alternative-subscription.md`](setup/student-alternative-subscription.md) for alternatives (e.g. free trial + credit card).
+See [`setup/student-alternative-subscription.md`](images/setup/student-alternative-subscription.md) for alternatives (e.g. free trial + credit card).
 
 ### 2. Resource Group and VNet
 markdown
@@ -31,16 +31,16 @@ Edit
 
 #### ✅ Creating a Resource Group
 
-1. Go to the [Azure Portal](https://portal.azure.com).
+1. Go to the [Azure Portal](images/https://portal.azure.com).
 2. In the search bar at the top, type `Resource groups`.  
-   ![Search Resource Groups](resource-group-search.png)
+   ![Search Resource Groups](images/resource-group-search.png)
 3. Click the **Create** button.  
-   ![Click Create](resource-group-create.png)
+   ![Click Create](images/resource-group-create.png)
 4. In the creation form:
    - Select your **Azure subscription**
    - Choose a **region**
    - Enter the **Resource Group name** (e.g., `RG-SOC-LAB`)  
-   ![Enter Name](resource-group-name.png)
+   ![Enter Name](images/resource-group-name.png)
 5. Click **Review + Create**, then finally click **Create**.
 
 ---
@@ -48,11 +48,11 @@ Edit
 #### 🌐 Creating a Virtual Network
 
 1. In the Azure Portal, search for `Virtual networks`.  
-   ![Search Virtual Network](virtual-network-1.png)
+   ![Search Virtual Network](images/virtual-network-1.png)
 2. Click **Create** and select the **existing resource group** `RG-SOC-LAB`.  
-   ![Select Resource Group](virtual-network-2.png)
+   ![Select Resource Group](images/virtual-network-2.png)
 3. Enter a name for the VNet, e.g. `Vnet-soc-lab`, and complete the required fields.  
-   ![Enter VNet Name](virtual-network-3.png)
+   ![Enter VNet Name](images/virtual-network-3.png)
 4. Click **Review + Create**, then **Create** to finish deploying the virtual network.
 
 ### 3. Virtual Machine (VM) Creation
@@ -62,9 +62,9 @@ Edit
 #### 🖥️ Creating the Virtual Machine
 
 1. In the Azure Portal, search for `Virtual machines`.  
-   ![Search Virtual Machine](VM-1.png)
+   ![Search Virtual Machine](images/VM-1.png)
 2. Click **Create**, and choose the **existing resource group** `RG-SOC-LAB`.  
-   ![Create VM](VM-2.png)
+   ![Create VM](images/VM-2.png)
 3. In the Basics tab, fill in the following details:  
    - **VM Name:** `CORP-NET-EAST-1`  
    - **Image:** *Windows 10 Pro N, version 22H2 - x64 Gen2*  
@@ -76,7 +76,7 @@ Edit
    - **Networking:** select `Vnet-soc-lab`  
      ✅ Check **Delete public IP and NIC when VM is deleted**
    - All other settings: leave as default  
-   ![VM Creation Confirmation](VM-3.png)
+   ![VM Creation Confirmation](images/VM-3.png)
 5. Click **Review + Create**, then **Create**.
 
 ---
@@ -87,9 +87,9 @@ Once the deployment is complete:
 
 1. Go to `Resource groups` → Select `RG-SOC-LAB`
 2. Click on **`CORP-NET-EAST-1-nsg`**  
-   ![NSG Selection](firewall-setting-2.png)
+   ![NSG Selection](images/firewall-setting-2.png)
 3. Delete the default **RDP rule** by clicking the trash icon.  
-   ![Delete Default RDP Rule](firewall-setting-3.png)
+   ![Delete Default RDP Rule](images/firewall-setting-3.png)
 4. Click on **Inbound security rules** → **Add rule**
 5. In the new rule:
    - **Source:** Any
@@ -100,7 +100,7 @@ Once the deployment is complete:
    - **Priority:** 100
    - **Name:** AllowAll
    - Description: Honeypot Lab  
-   ![Add Firewall Rule](firewall-setting-4.png)
+   ![Add Firewall Rule](images/firewall-setting-4.png)
 6. Click **Add** to save the rule.
 
 ---
@@ -111,17 +111,17 @@ Once the deployment is complete:
 
 1. In the Azure Portal, search for `Virtual machines`
 2. Select the VM `CORP-NET-EAST-1`  
-   ![Select VM](Test-1.png)
+   ![Select VM](images/Test-1.png)
 3. Copy the **Public IP address**  
-   ![Copy Public IP](Test-2.png)
+   ![Copy Public IP](images/Test-2.png)
 4. On your **host machine**, open the **Remote Desktop Connection** tool.
 5. Paste the VM's Public IP address.  
-   ![Enter IP in RDP](HostConnection-1.png)
+   ![Enter IP in RDP](images/HostConnection-1.png)
 6. Enter the credentials:
    - **Username:** `labuser`
    - **Password:** the one you set
 7. Click **Connect**, then **Yes** to accept the certificate prompt.  
-   ![RDP Connection Confirmation](HostConnection-2.png)
+   ![RDP Connection Confirmation](images/HostConnection-2.png)
 
 ---
 
@@ -130,12 +130,12 @@ Once the deployment is complete:
 Once inside the VM via RDP:
 
 1. Open the **Start menu** and search for **"Firewall & network protection"**  
-   ![Firewall Settings](HostConnection-3.png)
+   ![Firewall Settings](images/HostConnection-3.png)
 2. Turn off all three profiles:
    - **Domain network**
    - **Private network**
    - **Public network**  
-   ![Disable All Profiles](HostConnection-4.png)
+   ![Disable All Profiles](images/HostConnection-4.png)
 
 ---
 
@@ -153,9 +153,9 @@ To simulate a brute-force login attempt and verify log generation in Windows Eve
 
 1. Open a **new RDP session** from your host machine.
 2. Enter an invalid username (e.g., `bruteforce`) and any password.
-   ![Invalid Username Attempt](BruteForceActivity-1.png)
+   ![Invalid Username Attempt](images/BruteForceActivity-1.png)
 3. Click **OK** — the authentication will fail.
-   ![Failed Login](BruteForceActivity-2.png)
+   ![Failed Login](images/BruteForceActivity-2.png)
 
 ---
 
@@ -165,9 +165,9 @@ To simulate a brute-force login attempt and verify log generation in Windows Eve
 2. Navigate to:  
    `Windows Logs` → `Security`
 3. Look for an event with **Event ID 4625** (failed login).
-   ![Event Viewer Open](BruteForceActivity-3.png)
+   ![Event Viewer Open](images/BruteForceActivity-3.png)
 4. Click on the event to view the **username** that attempted the login (e.g., `bruteforce`).  
-   ![Failed Login Details](BruteForceActivity-4.png)
+   ![Failed Login Details](images/BruteForceActivity-4.png)
 
 ✅ This confirms that failed login attempts are being recorded by the Windows Event Log, and will be collected once connected to Microsoft Sentinel.
 
@@ -178,11 +178,11 @@ To simulate a brute-force login attempt and verify log generation in Windows Eve
 
 1. In the Azure Portal, search for `Log Analytics workspaces`.
 2. Click **Create** to launch the workspace wizard.  
-   ![Create LAW](Log-Analytics-1.png)
+   ![Create LAW](images/Log-Analytics-1.png)
 3. Fill in the required fields:
    - **Name:** `LAW-soc-lab-0001`
    - **Resource Group:** `RG-SOC-LAB`  
-   ![Enter LAW Details](Log-Analytics-2.png)
+   ![Enter LAW Details](images/Log-Analytics-2.png)
 4. Click **Review + Create**, then **Create** to deploy the workspace.
 
 ---
@@ -193,7 +193,7 @@ To simulate a brute-force login attempt and verify log generation in Windows Eve
 
 1. In the Azure Portal, search for `Microsoft Sentinel`.
 2. You should see your workspace (`LAW-soc-lab-0001`) listed. Click **Add** to connect Sentinel to the workspace.  
-   ![Connect Sentinel](Log-Analytics-3.png)
+   ![Connect Sentinel](images/Log-Analytics-3.png)
 
 ---
 
@@ -201,9 +201,9 @@ To simulate a brute-force login attempt and verify log generation in Windows Eve
 
 1. In the Sentinel workspace (`LAW-soc-lab-0001`), go to **Content Management** → **Content Hub**.
 2. Search for `Security Events` and install the **Windows Security Events** pack.  
-   ![Install Security Events](Log-Analytics-4.png)
+   ![Install Security Events](images/Log-Analytics-4.png)
 3. Once installation finishes, click **Manage**.  
-   ![Click Manage](Log-Analytics-5.png)
+   ![Click Manage](images/Log-Analytics-5.png)
 
 ---
 
@@ -211,13 +211,13 @@ To simulate a brute-force login attempt and verify log generation in Windows Eve
 
 1. In the content connector page, choose **Windows Security Events via AMA**.
 2. Click **Open connector page**.  
-   ![Open Connector Page](Log-Analytics-6.png)
+   ![Open Connector Page](images/Log-Analytics-6.png)
 3. Click **+ Create data collection rule** and fill in:
    - **Name:** `DCR-windows`
    - **Resources:** select your VM (`CORP-NET-EAST-1`)
    - **Collect:** choose **All Security Events**
 4. Click **Review + Create**, then **Create**.  
-   ![Create DCR](Log-Analytics-7.png)
+   ![Create DCR](images/Log-Analytics-7.png)
 
 ---
 
@@ -238,9 +238,9 @@ SecurityEvent
 
 ### 8. Query & Map Visualization
 
-**KQL Query:** [`queries/geoip-attack-map.kql`](queries/geoip-attack-map.kql)
+**KQL Query:** [`queries/geoip-attack-map.kql`](images/queries/geoip-attack-map.kql)
 
-**Attack Map:** See [`screenshots/attack-map.png`](screenshots/attack-map.png)
+**Attack Map:** See [`screenshots/attack-map.png`](images/screenshots/attack-map.png)
 
 ```kusto
 let GeoIPDB_FULL = _GetWatchlist("geoip");
