@@ -232,17 +232,12 @@ SecurityEvent
 | where EventID == 4625
 | order by TimeGenerated desc
 
-### 11. 🌍 Visualize Attacker IPs Using a GeoIP Watchlist
-
-This step enriches failed login logs with geographic information (country, city, latitude, longitude) using a custom Watchlist and KQL query in Microsoft Sentinel.
-
 ---
 
 ### 11. 🌍 Visualize Attacker IPs Using a GeoIP Watchlist
 
 This step enriches failed login logs with geographic information (country, city, latitude, longitude) using a custom Watchlist and KQL query in Microsoft Sentinel.
 
----
 
 #### 🧭 Step-by-Step: Create the GeoIP Watchlist in Microsoft Sentinel
 
@@ -271,20 +266,5 @@ This step enriches failed login logs with geographic information (country, city,
 
 ---
 
-#### 🔍 Step: Run the KQL Query to Enrich Event 4625 with GeoIP Data
-
-1. Open `Microsoft Sentinel` → Select `LAW-soc-lab-0001`
-2. Click on **Logs** under General
-3. Paste and run the following query (replace the IP with one from your own logs):
-
-```kusto
-let GeoIPDB_FULL = _GetWatchlist("geoip");
-let WindowsEvents = SecurityEvent
-| where EventID == 4625
-| where IpAddress == "92.63.197.9"  // Replace with an IP from your logs
-| order by TimeGenerated desc
-| evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
-WindowsEvents
-| project TimeGenerated, Computer, Attacker_IP = IpAddress, cityname, countryname, latitude, longitude
 
 
