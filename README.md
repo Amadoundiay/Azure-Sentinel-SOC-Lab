@@ -24,10 +24,6 @@ This project demonstrates how to build a complete SOC lab environment using Micr
 See [`setup/student-alternative-subscription.md`](images/setup/student-alternative-subscription.md) for alternatives (e.g. free trial + credit card).
 
 ### 2. Resource Group and VNet
-markdown
-Copy
-Edit
-### 2. Resource Group and VNet
 
 #### ✅ Creating a Resource Group
 
@@ -54,8 +50,6 @@ Edit
 3. Enter a name for the VNet, e.g. `Vnet-soc-lab`, and complete the required fields.  
    ![Enter VNet Name](images/virtual-network-3.png)
 4. Click **Review + Create**, then **Create** to finish deploying the virtual network.
-
-### 3. Virtual Machine (VM) Creation
 
 ### 3. Virtual Machine (VM) Creation
 
@@ -140,6 +134,7 @@ Once inside the VM via RDP:
 ---
 
 ✅ Now, from your **host machine**, you should be able to ping the VM successfully, as the firewall is disabled and NSG allows all traffic.
+
 
 ---
 
@@ -268,6 +263,33 @@ SecurityEvent
 ```
   ![WatchList-56](images/WatchList-56png.png)
 ---
+### 12. Attack Map Creation 🗺️
+
+In Microsoft Sentinel, we can visualize attack activity by creating an **Attack Map Workbook**. This helps track failed logins or malicious activity geographically.
+
+---
+
+#### Steps
+
+1. Go to **Microsoft Sentinel** → select your **Log Analytics Workspace** (`LAW-soc-lab-0001`) → **Workbooks**.  
+   ![Workbook-1](images/map-1.png)
+
+2. Click **+ New Workbook**. Delete any prepopulated elements.  
+   ![Workbook-2](images/map-2.png)
+
+3. Add a **Query** element to the workbook.  
+
+4. Go to the **Advanced Editor** tab, and paste the JSON from the file `map.json` (located in the `images` folder).  
+   ![Workbook-3](images/map-3.png)
+
+5. Save the workbook and observe the **query results**, which will visualize the attacks on a map with coordinates and IP information.
+   ![Workbook-3](images/map-4.png)
+---
+
+The workbook will dynamically display failed login attempts and other suspicious events, giving you a geographic overview of potential threats.
+ ![Workbook-3](images/map-5.png)
+  ![Workbook-3](images/map-6.png)
+
 
 
 
