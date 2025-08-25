@@ -231,40 +231,47 @@ To simulate a brute-force login attempt and verify log generation in Windows Eve
 SecurityEvent
 | where EventID == 4625
 | order by TimeGenerated desc
+```
+### 11. Watchlist Enrichment with GeoIP
+
+To enrich the logs and identify where failed login attempts are coming from, we create a **GeoIP watchlist** in Microsoft Sentinel and use it to correlate IP addresses.
 
 ---
 
-### 11. 🌍 Visualize Attacker IPs Using a GeoIP Watchlist
+#### Steps
 
-This step enriches failed login logs with geographic information (country, city, latitude, longitude) using a custom Watchlist and KQL query in Microsoft Sentinel.
+1. Go to **Microsoft Sentinel** → select your **Log Analytics Workspace** (`LAW-soc-lab-0001`).
+    ![Watchlist-2](images/WatchList-1.png)
+   ![Watchlist-2](images/WatchList-2.png)
 
+3. Click **New Watchlist**.  
+   ![Watchlist-3](images/WatchList-3.png)
 
-#### 🧭 Step-by-Step: Create the GeoIP Watchlist in Microsoft Sentinel
+4. Under **General**, set the **Name** (e.g., `geoip`) and the **Alias**.  
 
-1. In the Azure Portal, search for `Microsoft Sentinel`.
-2. Select the workspace: `LAW-soc-lab-0001`.  
-   ![Select Workspace](images/WatchList-1.png)
+5. Under **Source**, upload the file containing the **GeoIP database** (CSV format).  
+   ![Watchlist-4](images/WatchList-4.png)
 
-3. Under the **Configuration** section, click on **Watchlist**.  
-   ![Open Watchlist](images/WatchList-2.png)
+6. After the watchlist is created, go to **Logs** in the Analytics workspace and run the following KQL query:  
 
-4. Click **+ Add new** to create a new Watchlist.
-
-5. In the Watchlist wizard:  
-   - **Name:** `geoip`  
-   - **Alias:** `geoip`  
-   ![General Settings](images/WatchList-3.png)
-
-6. In the **Source** section:  
-   - Upload your `GeoLite2-IP.csv` file  
-   - Set the **SearchKey** to: `network`
-
-7. Click **Review + Create**, then **Create**.  
-   ![Review and Create](images/WatchList-4.png)
-
-📌 *Wait a few minutes for the watchlist to fully load and process.*
-
+```kql
+let GeoIP_DB = _GetWatchlist("geoip");
+SecurityEvent
+| where EventID == 4625
+| extend AttackerIP = tostring(IpAddress)
+| join kind=leftouter (
+    GeoIP_DB
+    | project IP_Address, Country, City, Latitude, Longitude
+) on $left.AttackerIP == $right.IP_Address
+| project TimeGenerated, Account, AttackerIP, Country, City, Latitude, Longitude
+| order by TimeGenerated desc
+```
+  ![WatchList-56](images/WatchList-56png.png)
 ---
+
+
+
+
 
 
 
